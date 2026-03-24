@@ -56,3 +56,6 @@ dkms.conf
 
 # these files are just for a quick catchup session on assembly
 assembly_catchup/*
+
+# Do not stage binary files
+*.bin

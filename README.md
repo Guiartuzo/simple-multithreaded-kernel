@@ -61,3 +61,13 @@ And with the command "Info registers" you can check the CS register pointing to 
 ## Paging memory scheme
 
 In general, paging memory scheme is a way an operating system manages memory by splitting it into fixed-size blocks and mapping them so programs think they have their own continuos memory.
+
+## A20 line
+
+By enabling the A20 it allows to extended memory access, following the OSDev wiki, it can be enabled like so: 
+
+<pre>
+in al, 0x92
+or al, 2
+out 0x92, al
+</pre>

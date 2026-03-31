@@ -71,3 +71,55 @@ in al, 0x92
 or al, 2
 out 0x92, al
 </pre>
+
+### Text mode
+
+Text mode is a display mode where the screen is treated as a grid of characters rather than individual
+pixels.
+- The screen is divided into rows and columns (e.g., 80x25).
+- You write ascii characters into memory starting at address 0xB8000 for coloured displays
+- Or for monochrome displays address 0xB0000
+- Each ascii character written to this memory has its pixel equivalent outputted to the monitor
+
+Each cell contains: 
+- A character (Like ASCII symbols, letters, numbers)
+- An attribute (color, brightness, blinking, etc.)
+
+Instead of drawing individual pixels, you put characters at any row or collumn. 
+
+Each character takes up two bytes
+- Byte 0 = ascii character e.g. 'A'
+- Byte 1 = Colour code
+
+Example: We want to set row 0 column 0 to a black "A"
+0xb8000 = 'A'
+0xb8001 = 0x00
+
+Example: Row 0 column 1 to black "B"
+0xb8002 = "B"
+0xb8003 = 0x00
+
+The advantages of Text Mode:
+
+Simplicity
+ - Easier to implement than graphics mode.
+ - No need for complex drivers or rendering logic.
+ - Perfect for early OS stages (bootloaders, kernels)
+
+Low resource usage
+ - Uses very little memory and CPU.
+
+Direct hardware access
+- Write directly to video memory
+- No abstraction layers required
+
+Fast output
+- Writing characters is faster than drawing individual pixels.
+
+Stable and Reliable
+- Works even before full hardware initialization
+- Supported by legacy BIOS and early boot environments
+
+Good for debugging
+- When graphics drivers aren't ready, text mode is still usable
+- Many kernels print logs this way during development.

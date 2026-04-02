@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "idt/idt.h"
+#include "io/io.h"
 
 /**************************************************************************************************/
 
@@ -85,6 +86,8 @@ void kernel_main()
     
     /* Initialize the interrupt descriptor table* */
     idt_init();    
+
+    outb(0x60, 0xff);
 }
 
 /**************************************************************************************************/

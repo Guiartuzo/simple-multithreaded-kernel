@@ -3,15 +3,21 @@
 #include "memory/memory.h"
 #include "kernel.h"
 
+/**************************************************************************************************/
+
 struct idt_desc idt_descriptors[PEACHOS_TOTAL_INTERRUPTS];
 struct idtr_desc idtr_descriptor;
 
 extern void idt_load(struct idtr_desc *ptr);
 
+/**************************************************************************************************/
+
 void idt_zero()
 {
     print("Divide by zero error");
 }
+
+/**************************************************************************************************/
 
 void idt_set(int interrupt_no, void* address)
 {
@@ -22,6 +28,8 @@ void idt_set(int interrupt_no, void* address)
     desc->type_attr = 0xEE;
     desc->offset_2 = (uint32_t) address >> 16;
 }
+
+/**************************************************************************************************/
 
 void idt_init()
 {

@@ -123,3 +123,18 @@ Stable and Reliable
 Good for debugging
 - When graphics drivers aren't ready, text mode is still usable
 - Many kernels print logs this way during development.
+
+### Interupt Descriptor Table
+
+The Interrupt Descriptor Table (IDT) is a core data strucuture in x86-based operating systems that 
+tells the CPU how to handle interrupts and exceptions.
+
+The IDT is basically a lookup table of handlers, the CPU has interrupt numbers like:
+- 0 -> divided-by-zero exception
+- 13 -> general protection fault
+- 32+ -> hardware interrupts (like keyboard, timer)
+
+The IDT maps each of these numbers to a function (handler) in the kernel.
+
+In Real mode we use interrupt vector table, but in Protected mode the Interrupt Descriptor Table is
+used.

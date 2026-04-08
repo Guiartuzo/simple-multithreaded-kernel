@@ -111,11 +111,14 @@ int heap_get_start_block(struct heap* heap, uint32_t total_blocks)
     return bs;
 }
 
+/**************************************************************************************************/
+
 void* heap_block_to_address(struct heap* heap, int block)
 {
     return heap->saddr + (block * PEACHOS_HEAP_BLOCK_SIZE);
 }
 
+/**************************************************************************************************/
 
 void heap_mark_blocks_taken(struct heap* heap, int start_block, int total_blocks)
 {
@@ -136,6 +139,8 @@ void heap_mark_blocks_taken(struct heap* heap, int start_block, int total_blocks
         }
     }
 }
+
+/**************************************************************************************************/
 
 void *heap_malloc_blocks(struct heap* heap, uint32_t total_blocks) 
 {
@@ -161,6 +166,8 @@ int heap_address_to_block(struct heap* heap, void* address)
     return ((int)(address - heap->saddr)) / PEACHOS_HEAP_BLOCK_SIZE;
 }
 
+/**************************************************************************************************/
+
 void heap_mark_blocks_free(struct heap* heap, int starting_block) 
 {
     struct heap_table* table = heap->table;
@@ -173,6 +180,8 @@ void heap_mark_blocks_free(struct heap* heap, int starting_block)
         }
     }
 }
+
+/**************************************************************************************************/
 
 void* heap_malloc(struct heap* heap, size_t size)
 {
@@ -188,3 +197,5 @@ void heap_free(struct heap* heap,  void* ptr)
 {
     heap_mark_blocks_free(heap, heap_address_to_block(heap, ptr));
 }
+
+/**************************************************************************************************/

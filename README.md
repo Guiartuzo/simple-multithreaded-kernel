@@ -138,3 +138,76 @@ The IDT maps each of these numbers to a function (handler) in the kernel.
 
 In Real mode we use interrupt vector table, but in Protected mode the Interrupt Descriptor Table is
 used.
+
+### Programmable interrupt controller
+
+Allows Hardware to interrupt the processor
+- The programmable interrupt controller allows different types of hardware to interrupt the 
+processor such as the hard disk, keyboard and more..
+
+IRQ's are mapped to a starting interrupt for example lets choose 0x20.
+- IRQ 0 would then be interrupt 0x20
+- IRQ 1 would then be interrupt 0x21
+- IRQ 2 would then be interrupt 0x22
+
+# Master vs Slave
+
+The system has two PIC (Programmable interrupt Controller) one for master ports and the other for 
+slave ports
+- The master handles IRQ 0-7
+- The lsave handles IRQ 8-15
+
+### What is the Heap ?
+
+The Heap is a giant memory region that can be shared in a controlled manner, you can ask the heap 
+for memory and tell the heap when your done with that memory, heap implementations are essentially 
+system memory managers.
+
+The heap is a part of process memory where variables are allocated and freed manually (or 
+automatically via a runtime/GC) during execution.
+
+- in C: malloc, calloc
+- in C++: new
+- In higher-level languages: objects are often allocated automatically
+
+OS provides memory to the processs using system calls like:
+- brk / sbrk (traditional heap growth)
+- mmap (modern allocation) 
+
+Usually a heap allocator:
+- Keeps track of gree/used blocks
+- Splits and merges memory chunks
+- Avoids fragmentation (ideally)
+
+# Limits for a 32 bit kernel
+
+In protected mode the processor is in a 32 bit state, so we have access only to 32 bit memory 
+addresses allowing us to address to a maximum of 4.29gb or 429496726 bytes of ram regardless of how 
+much system RAM is installed.
+
+# The simplest heap implementation
+
+- Start with a address and call it a "current_address" point it somewhere free i.e. 0x01000000
+- Any call to malloc gets the current address and stores it in a temporary called "tmp"
+- Now the current address is incremented by the size provided to "malloc"
+- Temporary variable called "tmp" that contains the allocated address is returned.
+- current_address now contains the next address for "malloc" to return when "malloc" is called 
+again.
+
+This is easy to implement, however in this way, memory won't be released and the system may require
+a reset, also there is no bound checking.
+
+<pre>
+void* current_address = (void*)(0x01000000);
+void* malloc(int size)
+{
+    void* tmp = current_address;
+    current_address += size;
+    return tmp;
+}
+
+void free(void* ptr)
+{
+    // Due to this design, a free function cannot be implemented
+}
+</pre>

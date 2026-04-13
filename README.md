@@ -212,7 +212,7 @@ void free(void* ptr)
 }
 </pre>
 
-### What is paging ?
+# What is paging ?
 
 Is a memory management technique used by operating systems to efficiently handle a program's memory
 without requiring it to be stored in one continuous block of physical RAM.
@@ -227,15 +227,15 @@ using a page table. The OS translates it into physical address.
 
 ## What is it used for ?
 
-# Efficient memory usage
+### Efficient memory usage
 - No need for contiguous allocation -> avoids external fragmentation
 - Makes better use of available RAM
 
-# Virtual Memory
+### Virtual Memory
 - Enables systems to use more memory than phisically available
 - Pages not currently needed can be stored on disk (swap space)
 
-# Process isolation & protection
+#### Process isolation & protection
 - Each process has its own page table
 
 ## Downsides

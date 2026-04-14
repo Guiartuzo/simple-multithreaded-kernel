@@ -13,4 +13,6 @@
 #define PEACHOS_HEAP_ADDRESS 0x01000000        //< From OS Dev, Extended memory - RAM free for use
 #define PEACHOS_HEAP_TABLE_ADDRESS 0x00007E00  //< From OS Dev, usable memory / 480 Kb
 
+#define PEACHOS_SECTOR_SIZE 512
+
 #endif

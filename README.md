@@ -242,3 +242,9 @@ using a page table. The OS translates it into physical address.
 - Page table overhead (uses memory)
 - Address translation cost
 - Page faults (When a page isn't in RAM -> slower disk access)
+
+# What is a filesystem ?
+
+A filesystem is the layer of the operating system that defines how data is stored, organized, and
+retrieved on a storage device (like a disk, SSD, or evem a RAM disk). Without it, a disk is just a 
+huge array of raw bytes and sectors. Basically a filesystem provides file abstratcion.

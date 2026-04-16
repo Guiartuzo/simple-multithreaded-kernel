@@ -8,7 +8,7 @@
 static int pathparser_path_valid_format(const char* filename)
 {
     int len = strnlen(filename, PEACHOS_MAX_PATH);
-    return (len >= 3 && isdigit(filename[0])) && memcmp((void*)(&filename[1], ":/", 2)) == 0;
+    return (len >= 3 && isdigit(filename[0])) && memcmp((void*)&filename[1], ":/", 2) == 0;
 }
 
 static int pathparser_get_drive_by_path(const char** path)
@@ -34,12 +34,12 @@ static struct path_root* pathparser_create_root(int drive_number)
 
 static const char* pathparser_get_path_part(const char** path)
 {
-    char* result_path_part = kazalloc(PEACHOS_MAX_PATH);
+    char* result_path_part = kzalloc(PEACHOS_MAX_PATH);
     int i = 0;
 
     while(**path != '/' && **path != 0x00) {
 
-        result_path_part[i] == **path;
+        result_path_part[i] = **path;
         *path += 1;
         i++;
     }
@@ -90,4 +90,44 @@ void pathparser_free(struct path_root* root)
 
     kfree(root);
     
-} /* 28:22 */
+}
+
+struct path_root* pathparser_parse(const char* path, const char* current_directory_path)
+{
+    int res = 0;
+    const char* tmp_path = path;
+    struct path_root* path_root = 0;
+
+    if(strlen(path) > PEACHOS_MAX_PATH) {
+        print("out 1");
+        goto out;
+    }
+
+    res = pathparser_get_drive_by_path(&tmp_path);
+    if (res < 0) {
+        print("out 2");
+        goto out;
+    }
+
+    path_root = pathparser_create_root(res);
+    if (!path_root) {
+        print("out 3");
+        goto out;
+    }
+
+    struct path_part* first_part = pathparser_parse_path_part(NULL, &tmp_path);
+    if (!first_part) {
+        print("out 4");
+        goto out;
+    }
+
+    path_root->first = first_part;
+    struct path_part* part = pathparser_parse_path_part(first_part, &tmp_path);
+
+    while (part) {
+        part = pathparser_parse_path_part(part, &tmp_path);
+    }
+
+out:
+    return path_root;
+}

@@ -111,25 +111,21 @@ struct path_root* pathparser_parse(const char* path, const char* current_directo
     struct path_root* path_root = 0;
 
     if(strlen(path) > PEACHOS_MAX_PATH) {
-        print("out 1");
         goto out;
     }
 
     res = pathparser_get_drive_by_path(&tmp_path);
     if (res < 0) {
-        print("out 2");
         goto out;
     }
 
     path_root = pathparser_create_root(res);
     if (!path_root) {
-        print("out 3");
         goto out;
     }
 
     struct path_part* first_part = pathparser_parse_path_part(NULL, &tmp_path);
     if (!first_part) {
-        print("out 4");
         goto out;
     }
 

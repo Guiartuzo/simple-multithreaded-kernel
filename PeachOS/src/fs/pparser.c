@@ -11,6 +11,8 @@ static int pathparser_path_valid_format(const char* filename)
     return (len >= 3 && isdigit(filename[0])) && memcmp((void*)&filename[1], ":/", 2) == 0;
 }
 
+/**************************************************************************************************/
+
 static int pathparser_get_drive_by_path(const char** path)
 {
     if(!pathparser_path_valid_format(*path)) {
@@ -24,6 +26,8 @@ static int pathparser_get_drive_by_path(const char** path)
     return drive_no;
 }
 
+/**************************************************************************************************/
+
 static struct path_root* pathparser_create_root(int drive_number)
 {
     struct path_root* path_r = kzalloc(sizeof(struct path_root));
@@ -31,6 +35,8 @@ static struct path_root* pathparser_create_root(int drive_number)
     path_r->first = 0;
     return path_r;
 }
+
+/**************************************************************************************************/
 
 static const char* pathparser_get_path_part(const char** path)
 {
@@ -59,6 +65,8 @@ static const char* pathparser_get_path_part(const char** path)
     return result_path_part;
 }
 
+/**************************************************************************************************/
+
 struct path_part* pathparser_parse_path_part(struct path_part* last_part, const char** path)
 {
     const char* path_part_str = pathparser_get_path_part(path);
@@ -77,6 +85,8 @@ struct path_part* pathparser_parse_path_part(struct path_part* last_part, const 
     return part;
 }
 
+/**************************************************************************************************/
+
 void pathparser_free(struct path_root* root)
 {
     struct path_part* part = root->first;
@@ -91,6 +101,8 @@ void pathparser_free(struct path_root* root)
     kfree(root);
     
 }
+
+/**************************************************************************************************/
 
 struct path_root* pathparser_parse(const char* path, const char* current_directory_path)
 {
@@ -131,3 +143,5 @@ struct path_root* pathparser_parse(const char* path, const char* current_directo
 out:
     return path_root;
 }
+
+/**************************************************************************************************/

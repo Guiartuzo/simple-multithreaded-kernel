@@ -4,7 +4,7 @@
 #include "idt/idt.h"
 #include "io/io.h"
 #include "memory/heap/kheap.h"
-#include "memory/paging/paging.h"
+#include "memory/paging/paging.h" 
 #include "disk/disk.h"
 #include "fs/pparser.h"
 #include "string/string.h"
@@ -107,7 +107,6 @@ void kernel_main()
     unsigned char c = 0;
     diskstreamer_read(stream, &c, 1);
     while(1){}
-
 }
 
 /**************************************************************************************************/

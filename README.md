@@ -248,3 +248,25 @@ using a page table. The OS translates it into physical address.
 A filesystem is the layer of the operating system that defines how data is stored, organized, and
 retrieved on a storage device (like a disk, SSD, or evem a RAM disk). Without it, a disk is just a 
 huge array of raw bytes and sectors. Basically a filesystem provides file abstratcion.
+
+# What is VFS layer ?
+VFS stands for Virtual file system. It's an abstraction layer inside the kernel that provides a 
+uniform interface to different filesystem implementations, it essentially sits between user programs
+(and system calls like open, read, write) and an actual filesystem drivers (like EXT4, FAT32, NTFS, 
+etc.)
+
+Instead of user applications dealing with each filesystem differently, they interact wih a standard
+API, and the VFS translates those calls to the correct filesystem-specific operations. Just like a
+translator or adapter.
+
+### The virtual filesystem layer allows a kernel to support san infinite amount of filesystems
+- Filesystems drivers can be loaded or unloaded on demand
+- The programming interface to the filesystems remains the same for all filesystems
+- The virtual filesystem layer allows us to abstract out low-level filesystem code
+- Allows filesystem functionality to be loaded or unloaded to the kernel at any time
+
+### What happens when a disk gets inserted ?
+- We poll each filesystem and ask if the disk holds a filesystem it can manage.
+- We call this resolving the filesystem
+- When a filesystem that can be used with the disk is found then the disk binds its self to its
+implementation.

@@ -4,9 +4,14 @@
 #include "status.h"
 #include "memory/heap/kheap.h"
 #include "kernel.h"
+#include "fat/fat16.h"
+
+/**************************************************************************************************/
 
 struct filesystem* filesystems[PEACHOS_MAX_FILESYSTEMS];
 struct file_descriptor* file_descriptors[PEACHOS_MAX_FILE_DESCRIPTORS];
+
+/**************************************************************************************************/
 
 static struct filesystem** fs_get_free_filesystem()
 {
@@ -20,24 +25,28 @@ static struct filesystem** fs_get_free_filesystem()
     return 0;
 }
 
+/**************************************************************************************************/
+
 void fs_insert_filesystem(struct filesystem* filesystem)
 {
     struct filesystem** fs;
-    if (filesystem == 0) {
-        fs = fs_get_free_filesystem();
-        if (!fs) {
-            print("Problem inserting filesystem"); 
-            while(1){}
-        }
+    fs = fs_get_free_filesystem();
+    if (!fs) {
+        print("Problem inserting filesystem"); 
+        while(1){}
     }
 
     *fs = filesystem;
 }
 
+/**************************************************************************************************/
+
 static void fs_static_load()
 {
-    //  fs_insert_filesystem(fat16_init());   
+    fs_insert_filesystem(fat16_init());   
 }
+
+/**************************************************************************************************/
 
 void fs_load()
 {
@@ -45,11 +54,15 @@ void fs_load()
     fs_static_load();
 }
 
+/**************************************************************************************************/
+
 void fs_init()
 {
     memset(file_descriptors, 0, sizeof(file_descriptors));
     fs_load();
 }
+
+/**************************************************************************************************/
 
 static int file_new_descriptor(struct file_descriptor** desc_out)
 {
@@ -69,6 +82,8 @@ static int file_new_descriptor(struct file_descriptor** desc_out)
     return res;
 } 
 
+/**************************************************************************************************/
+
 static struct file_descriptor* file_get_descriptor(int fd)
 {
     if (fd <= 0 || fd >= PEACHOS_MAX_FILE_DESCRIPTORS) {
@@ -79,6 +94,8 @@ static struct file_descriptor* file_get_descriptor(int fd)
     int index = fd - 1;
     return file_descriptors[index];
 }
+
+/**************************************************************************************************/
 
 struct filesystem* fs_resolve(struct disk* disk)
 {
@@ -93,7 +110,11 @@ struct filesystem* fs_resolve(struct disk* disk)
     return fs;
 }
 
+/**************************************************************************************************/
+
 int fopen(const char* filename, const char* mode)
 {
     return -EIO;
 }
+
+/**************************************************************************************************/

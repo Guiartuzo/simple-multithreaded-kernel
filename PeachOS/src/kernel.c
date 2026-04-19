@@ -9,6 +9,7 @@
 #include "fs/pparser.h"
 #include "string/string.h"
 #include "disk/streamer.h"
+#include "fs/file.h"
 
 /**************************************************************************************************/
 
@@ -84,6 +85,9 @@ void kernel_main()
     /* Initialize the heap */
     kheap_init();
 
+    /* Initialize filesystems */
+    fs_init();
+
     /* Search and initialize disks */
     disk_search_and_init();
 
@@ -102,10 +106,8 @@ void kernel_main()
     /* Enable system interrupts */
     enable_interrupts();
 
-    struct disk_stream* stream = diskstreamer_new(0);
-    diskstreamer_seek(stream, 0x201);
-    unsigned char c = 0;
-    diskstreamer_read(stream, &c, 1);
+    char buf[20];
+    strcpy(buf, "hello!");
     while(1){}
 }
 
